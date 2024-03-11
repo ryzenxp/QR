@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> XPQR Code</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+    <h1>XPQR Code </h1>
+    <textarea id="textInput" placeholder="Enter text here"></textarea>
+   
+    <button onclick="generateQR()">Generate QR Code</button>
+    
+    <div class="qrs" id="qrCode"></div>
+  
+</div>
+
+    <script>
+        async function generateQR() {
+            const Input = document.getElementById('textInput').value;
+            if (!Input) {
+                alert('Please enter some text');
+                return;
+            }
+    
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: Input })
+            });
+    
+            const data = await response.json();
+            const Img = `<img src="${data.qrCode}" alt="QR Code">`;
+            document.getElementById('qrCode').innerHTML = Img;
+        }
+    </script>
+    
+</body>
+</html>
